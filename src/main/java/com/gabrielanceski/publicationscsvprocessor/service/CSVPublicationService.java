@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -19,10 +20,12 @@ public class CSVPublicationService implements IPublicationService<Publication> {
     private static final Logger logger = LoggerFactory.getLogger(PublicationController.class);
     private final IPublicationRepository<Publication> publicationRepository;
     private final PublicationProcessor<CSVRecord, Publication> csvProcessor;
+    private final PublicationExportService publicationExportService;
 
-    public CSVPublicationService(IPublicationRepository<Publication> publicationRepository, PublicationProcessor<CSVRecord, Publication> csvProcessor) {
+    public CSVPublicationService(IPublicationRepository<Publication> publicationRepository, PublicationProcessor<CSVRecord, Publication> csvProcessor, PublicationExportService publicationExportService) {
         this.publicationRepository = publicationRepository;
         this.csvProcessor = csvProcessor;
+        this.publicationExportService = publicationExportService;
     }
 
     @Override
@@ -34,6 +37,15 @@ public class CSVPublicationService implements IPublicationService<Publication> {
         }
 
         csvProcessor.processFile(file);
+    }
+
+    @Override
+    public byte[] exportData() {
+        try {
+            return publicationExportService.exportData();
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao exportar dados.");
+        }
     }
 
     @Override

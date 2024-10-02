@@ -22,6 +22,16 @@ public class PublicationRepository implements IPublicationRepository<Publication
 
 
     @Override
+    public List<Publication> findAll() {
+        logger.debug("findAll() - Finding all publications.");
+        return jdbcClient.sql("""
+                SELECT * FROM PUBLICATIONS
+            """)
+            .query(Publication.class)
+            .list();
+    }
+
+    @Override
     public Optional<Publication> findPublicationByDoi(String doi) {
         logger.debug("findByDoi() - Finding publication by DOI: <{}>", doi);
         return jdbcClient.sql("""
