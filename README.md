@@ -24,11 +24,11 @@ Tecnologias a serem utilizadas:
 
 ## Instruções para execução
 
-Para executar o projeto, é necessário ter o Java e o Maven instalados. E então, executar os comandos abaixo:
+Para executar o projeto, é necessário ter o Java instalado. E então, executar os comandos abaixo:
 
 ```
-mvn clean install package -DskipTests
-java -jar target/publications-1.0.jar
+./mvnw clean install package -DskipTests
+java -jar target/publications-csv-processor-1.0.jar
 ```
 
 O projeto estará disponível em http://localhost:8080
